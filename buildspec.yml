@@ -6,9 +6,7 @@ phases:
       - echo "nothing to do in install"
   pre_build:
     commands:
-      - echo "Installing dependencies - `pwd`"
-      - cd app && npm install
-      - echo "dependencies install completed `date`"
+      - echo "nothing to do in pre_build"
   build:
     commands:
       - echo "Starting build `date` in `pwd`"
