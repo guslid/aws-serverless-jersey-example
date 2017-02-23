@@ -11,30 +11,30 @@
  * and limitations under the License.
  */
 package com.amazonaws.serverless.sample.jersey.model;
-//import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import java.io.Serializable;
 import java.util.Date;
 
-//@DynamoDBTable(tableName = "DDB_TABLE")
+@DynamoDBTable(tableName = "DDB_TABLE")
 public class Pet {
     private String id;
     private String breed;
     private String name;
     private Date dateOfBirth;
 
-    //@DynamoDBHashKey
+    @DynamoDBHashKey
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
-    //@DynamoDBAttribute
+    @DynamoDBAttribute
     public String getBreed() { return breed; }
     public void setBreed(String breed) { this.breed = breed; }
 
-    //@DynamoDBAttribute
+    @DynamoDBAttribute
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    //@DynamoDBAttribute
+    @DynamoDBAttribute
     public Date getDateOfBirth() { return dateOfBirth; }
     public void setDateOfBirth(Date dateOfBirth) { this.dateOfBirth = dateOfBirth; }
 }

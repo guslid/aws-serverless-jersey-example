@@ -30,17 +30,17 @@ public class PetsResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createPet(Pet newPet) {
+    public Response createPet(final Pet newPet) {
         if (newPet.getName() == null || newPet.getBreed() == null) {
             return Response.status(400).entity(new Error("Invalid name or breed")).build();
         }
 
-        /*AmazonDynamoDBClient client = new AmazonDynamoDBClient();
-        DynamoDBMapper mapper = new DynamoDBMapper(client, new DynamoDBMapperConfig.Builder().withTableNameOverride(TableNameOverride.withTableNameReplacement(System.getenv("DDB_TABLE"))).build()); */
+        AmazonDynamoDBClient client = new AmazonDynamoDBClient();
+        DynamoDBMapper mapper = new DynamoDBMapper(client, new DynamoDBMapperConfig.Builder().withTableNameOverride(TableNameOverride.withTableNameReplacement(System.getenv("DDB_TABLE"))).build());
 
         Pet dbPet = newPet;
         dbPet.setId(UUID.randomUUID().toString());
-        //mapper.save(dbPet);
+        mapper.save(dbPet);
 
         return Response.status(200).entity(dbPet).build();
     }
