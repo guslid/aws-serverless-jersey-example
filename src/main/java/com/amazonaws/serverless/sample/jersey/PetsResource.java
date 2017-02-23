@@ -30,7 +30,7 @@ public class PetsResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createPet(final Pet newPet) {
+    public Response createPet(Pet newPet) {
         if (newPet.getName() == null || newPet.getBreed() == null) {
             return Response.status(400).entity(new Error("Invalid name or breed")).build();
         }
