@@ -35,12 +35,12 @@ public class PetsResource {
             return Response.status(400).entity(new Error("Invalid name or breed")).build();
         }
 
-        AmazonDynamoDBClient client = new AmazonDynamoDBClient();
-        DynamoDBMapper mapper = new DynamoDBMapper(client, new DynamoDBMapperConfig.Builder().withTableNameOverride(TableNameOverride.withTableNameReplacement(System.getenv("DDB_TABLE"))).build());
+        /*AmazonDynamoDBClient client = new AmazonDynamoDBClient();
+        DynamoDBMapper mapper = new DynamoDBMapper(client, new DynamoDBMapperConfig.Builder().withTableNameOverride(TableNameOverride.withTableNameReplacement(System.getenv("DDB_TABLE"))).build()); */
 
         Pet dbPet = newPet;
         dbPet.setId(UUID.randomUUID().toString());
-        mapper.save(dbPet);
+        //mapper.save(dbPet);
 
         return Response.status(200).entity(dbPet).build();
     }
