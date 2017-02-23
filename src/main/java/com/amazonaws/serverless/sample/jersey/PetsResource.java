@@ -12,6 +12,7 @@
  */
 package com.amazonaws.serverless.sample.jersey;
 
+import com.amazonaws.regions.Regions;
 import com.amazonaws.serverless.sample.jersey.model.Pet;
 import com.amazonaws.serverless.sample.jersey.model.PetData;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
@@ -36,6 +37,7 @@ public class PetsResource {
         }
 
         AmazonDynamoDBClient client = new AmazonDynamoDBClient();
+        client.withRegion(Regions.EU_WEST_1);
         DynamoDBMapper mapper = new DynamoDBMapper(client, new DynamoDBMapperConfig.Builder().withTableNameOverride(TableNameOverride.withTableNameReplacement(System.getenv("DDB_TABLE"))).build());
 
         Pet dbPet = newPet;
