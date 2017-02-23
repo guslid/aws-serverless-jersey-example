@@ -14,6 +14,10 @@ package com.amazonaws.serverless.sample.jersey;
 
 import com.amazonaws.serverless.sample.jersey.model.Pet;
 import com.amazonaws.serverless.sample.jersey.model.PetData;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig.TableNameOverride;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -31,8 +35,13 @@ public class PetsResource {
             return Response.status(400).entity(new Error("Invalid name or breed")).build();
         }
 
+        AmazonDynamoDBClient client = new AmazonDynamoDBClient();
+        DynamoDBMapper mapper = new DynamoDBMapper(client, new DynamoDBMapperConfig.Builder().withTableNameOverride(TableNameOverride.withTableNameReplacement(System.getenv("DDB_TABLE"))).build());
+
         Pet dbPet = newPet;
         dbPet.setId(UUID.randomUUID().toString());
+        mapper.save(dbPet);
+
         return Response.status(200).entity(dbPet).build();
     }
 
