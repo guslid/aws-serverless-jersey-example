@@ -62,7 +62,7 @@ public class PetsResource {
 
     @Path("/{petId}") @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Pet getPetDetails(@PathParam("petId") int petId) {
+    public Pet getPetDetails(@PathParam("petId") String petId) {
         client.withRegion(Regions.EU_WEST_1);
         DynamoDBMapper mapper = new DynamoDBMapper(client, new DynamoDBMapperConfig.Builder().withTableNameOverride(TableNameOverride.withTableNameReplacement(System.getenv("DDB_TABLE"))).build());
 
