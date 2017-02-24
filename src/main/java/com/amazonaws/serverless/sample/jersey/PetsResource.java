@@ -19,14 +19,18 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig.TableNameOverride;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.UUID;
+import java.util.List;
 
 @Path("/pets")
 public class PetsResource {
+
+    static AmazonDynamoDBClient client = new AmazonDynamoDBClient();
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -36,7 +40,6 @@ public class PetsResource {
             return Response.status(400).entity(new Error("Invalid name or breed")).build();
         }
 
-        AmazonDynamoDBClient client = new AmazonDynamoDBClient();
         client.withRegion(Regions.EU_WEST_1);
         DynamoDBMapper mapper = new DynamoDBMapper(client, new DynamoDBMapperConfig.Builder().withTableNameOverride(TableNameOverride.withTableNameReplacement(System.getenv("DDB_TABLE"))).build());
 
@@ -49,33 +52,21 @@ public class PetsResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Pet[] listPets(@QueryParam("limit") int limit) {
-        if (limit < 1) {
-            limit = 10;
-        }
+    public List<Pet> listPets() {
+        client.withRegion(Regions.EU_WEST_1);
+        DynamoDBMapper mapper = new DynamoDBMapper(client, new DynamoDBMapperConfig.Builder().withTableNameOverride(TableNameOverride.withTableNameReplacement(System.getenv("DDB_TABLE"))).build());
 
-        Pet[] outputPets = new Pet[limit];
-
-        for (int i = 0; i < limit; i++) {
-            Pet newPet = new Pet();
-            newPet.setId(UUID.randomUUID().toString());
-            newPet.setName(PetData.getRandomName());
-            newPet.setBreed(PetData.getRandomBreed());
-            newPet.setDateOfBirth(PetData.getRandomDoB());
-            outputPets[i] = newPet;
-        }
-
+        List<Pet> outputPets = mapper.scan(Pet.class, new DynamoDBScanExpression());
         return outputPets;
     }
 
     @Path("/{petId}") @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Pet getPetDetails() {
-        Pet newPet = new Pet();
-        newPet.setId(UUID.randomUUID().toString());
-        newPet.setBreed(PetData.getRandomBreed());
-        newPet.setDateOfBirth(PetData.getRandomDoB());
-        newPet.setName(PetData.getRandomName());
+    public Pet getPetDetails(@PathParam("petId") int petId) {
+        client.withRegion(Regions.EU_WEST_1);
+        DynamoDBMapper mapper = new DynamoDBMapper(client, new DynamoDBMapperConfig.Builder().withTableNameOverride(TableNameOverride.withTableNameReplacement(System.getenv("DDB_TABLE"))).build());
+
+        Pet newPet = mapper.load(Pet.class, petId);
         return newPet;
     }
 }
