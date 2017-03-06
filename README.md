@@ -3,7 +3,7 @@ A basic example AWS Serverless Java container application written with the [Jers
 
 The application is meant to be deployed as part of an automated CI/CD pipeline inspired from [this example] (https://aws.amazon.com/blogs/compute/continuous-deployment-for-serverless-applications/). This allows for a fully automated pipeline with multiple stages including build and integration tests as well as support for environment variables for full flexibility.
 
-![overview](images/overview.png)
+There are two separate parts to this application: the api and the pipeline which detects, builds, and deploys changes.
 
 ## Installation
 
