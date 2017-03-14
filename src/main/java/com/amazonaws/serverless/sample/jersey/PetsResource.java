@@ -14,7 +14,6 @@ package com.amazonaws.serverless.sample.jersey;
 
 import com.amazonaws.regions.Regions;
 import com.amazonaws.serverless.sample.jersey.model.Pet;
-import com.amazonaws.serverless.sample.jersey.model.PetData;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
