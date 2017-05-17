@@ -20,7 +20,9 @@ Resources:
       Runtime: java8
       CodeUri: target/serverless-jersey-example-1.0-SNAPSHOT.jar
       MemorySize: 512
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - AmazonDynamoDBFullAccess
+        - AWSXrayWriteOnlyAccess
       Timeout: 20
       Environment:
         Variables:
