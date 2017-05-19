@@ -64,7 +64,13 @@ public class PetsResource {
         client.withRegion(Regions.EU_WEST_1);
         DynamoDBMapper mapper = new DynamoDBMapper(client, new DynamoDBMapperConfig.Builder().withTableNameOverride(TableNameOverride.withTableNameReplacement(System.getenv("DDB_TABLE"))).build());
 
+        Subsegment subsegment = AWSXRay.beginSubsegment("Get Pets from DynamoDB");
+        subsegment.putAnnotation("table", System.getenv("DDB_TABLE"));
+
         List<Pet> outputPets = mapper.scan(Pet.class, new DynamoDBScanExpression());
+
+        AWSXRay.endSubsegment();
+        
         return outputPets;
     }
 
