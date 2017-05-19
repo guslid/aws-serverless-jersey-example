@@ -19,6 +19,8 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig.TableNameOverride;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.xray.AWSXRay;
+import com.amazonaws.xray.entities.Subsegment;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -44,7 +46,14 @@ public class PetsResource {
 
         Pet dbPet = newPet;
         dbPet.setId(UUID.randomUUID().toString());
+
+        Subsegment subsegment = AWSXRay.beginSubsegment("Save Pet to DynamoDB");
+        subsegment.putAnnotation("table", System.getenv("DDB_TABLE"));
+        subsegment.putAnnotation("id", dbPet.getId());
+
         mapper.save(dbPet);
+
+        AWSXRay.endSubsegment();
 
         return Response.status(200).entity(dbPet).build();
     }
