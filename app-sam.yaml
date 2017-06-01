@@ -24,6 +24,7 @@ Resources:
         - AmazonDynamoDBFullAccess
         - AWSXrayWriteOnlyAccess
       Timeout: 20
+      Tracing: Active
       Environment:
         Variables:
           DDB_TABLE: !Ref Table
